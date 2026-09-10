@@ -272,41 +272,56 @@ DO  ! CYCLE FOR SPIN-UP
         N_fert = 0.0
         P_fert = 0.0
 
+        ! ----------------------------------------------------------
+        ! P addition experiment
+        ! P_annual unit: kg P ha-1 -> g P m-2
+        ! ----------------------------------------------------------
         IF (NPaddition .EQ. 1) THEN
 
             P_annual = P_add_rate_kg_ha_yr * 0.1
-            ihour_in_day = MOD(itime-1, 24)
-            P_fert = 0.0
+            P_pulse  = P_annual / 4.0
+            P_fert   = 0.0
 
-            IF (ihour_in_day .EQ. 0) THEN
+            ! Directly obtain date from forcing data, so the code does
+            ! not depend on whether the simulation begins in 2021 or 2022.
+            year = INT(forcing_data(1, itime))
+            idoy = INT(forcing_data(2, itime))
+            ihour_in_day = INT(forcing_data(3, itime))
 
-                ! 模拟从 2021-01-01 开始，idays 为 0-based
-                ! 2022-07-01: 546
-                ! 2023-07-01: 911
-                ! 2023-10-01: 1003
-                ! 2024-01-01: 1095
-                ! 2024-04-01: 1186
+            ! Apply P only at the first hour of the selected day.
+            IF (ihour_in_day .EQ. 1) THEN
 
-                IF (idays .EQ. 546) THEN
+                ! 2022: one full annual dose on 1 July.
+                IF (year .EQ. 2022 .AND. idoy .EQ. 182) THEN
                     P_fert = P_annual
                 ENDIF
 
-                P_pulse = P_annual / 4.0
+                ! 2023: four equal additions.
+                IF (year .EQ. 2023) THEN
+                    IF (idoy .EQ. 1   .OR. idoy .EQ. 91  .OR. &
+                        idoy .EQ. 182 .OR. idoy .EQ. 274) THEN
+                        P_fert = P_pulse
+                    ENDIF
+                ENDIF
 
-                IF (idays .EQ. 911)  P_fert = P_pulse
-                IF (idays .EQ. 1003) P_fert = P_pulse
-                IF (idays .EQ. 1095) P_fert = P_pulse
-                IF (idays .EQ. 1186) P_fert = P_pulse
+                ! 2024 is a leap year.
+                IF (year .EQ. 2024) THEN
+                    IF (idoy .EQ. 1   .OR. idoy .EQ. 92  .OR. &
+                        idoy .EQ. 183 .OR. idoy .EQ. 275) THEN
+                        P_fert = P_pulse
+                    ENDIF
+                ENDIF
 
                 IF (P_fert .GT. 0.0) THEN
-                    WRITE(*,*) 'DEBUG P_pulse: year=', simu_year, &
-                            ' idays=', idays, ' itime=', itime, &
-                            ' P_add=', P_add_rate_kg_ha_yr, &
-                            ' P_fert=', P_fert
+                    WRITE(*,*) 'P addition: year=', year,       &
+                               ' doy=', idoy,                   &
+                               ' rate=', P_add_rate_kg_ha_yr,   &
+                               ' P_fert=', P_fert
                 ENDIF
 
             ENDIF
         ENDIF
+
         
         StemSap=AMIN1(Stemmax,SapS*bmStem)
         RootSap=AMIN1(Rootmax,SapR*bmRoot)
