@@ -13,9 +13,22 @@ MODULE SPINUP_mod
     !variables: NPP and passive SOM for criteria of SASU
     !output_ndays is cumulative variable
 
-    LoopNPP_d(m)=sum(output_daily(7,:))/output_ndays    ! [/output_ndays], ref: see xia et al., 2012, Fig.3 the unit is gC m-2 d-1
-    LoopNPP_yr(m)=sum(output_daily(7,:))                ! annual NPP, add for test wrong: output_daily not for one year
-    LoopNPP_yr_noadd(m)=sum(output_daily(25,:))
+    ! output_daily:
+    ! 1 = GPP
+    ! 2 = Reco
+    ! 3 = NEE
+    ! 4 = NPP
+    ! 5 = LAI
+
+    LoopNPP_d(m) = SUM(output_daily(4,:)) / REAL(output_ndays)
+    LoopNPP_yr(m) = SUM(output_daily(4,:))
+
+    ! 当前正式输出中没有单独保存NPP_noadd。
+    ! 阶段1未施磷，因此它与NPP相同。
+    LoopNPP_yr_noadd(m) = SUM(output_daily(4,:))
+
+    LoopNEE_d(m) = SUM(output_daily(3,:)) / REAL(output_ndays)
+    LoopNEE_yr(m) = SUM(output_daily(3,:))
     LoopNEE_d(m)=sum(output_daily(3,:))/output_ndays
     LoopNEE_yr(m)=sum(output_daily(3,:))
     LoopQC9(m) = outputd_ccycle_Cpools(9,output_ndays)   !the slowest pool

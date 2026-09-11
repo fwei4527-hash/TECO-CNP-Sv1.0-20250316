@@ -1,0 +1,148 @@
+ NPaddition =            0
+ P_add_rate_kg_ha_yr =    0.00000000    
+ uni_Year        1934        1935        1936        1937        1938        1939        1940        1941        1942        1943        1944        1945        1946        1947        1948        1949        1950        1951        1952        1953        1954        1955        1956        1957        1958        1959        1960        1961        1962        1963        1964        1965        1966        1967        1968        1969        1970        1971        1972        1973        1974        1975        1976        1977        1978        1979        1980        1981        1982        1983          50
+  leap year        1936
+  leap year        1940
+  leap year        1944
+  leap year        1948
+  leap year        1952
+  leap year        1956
+  leap year        1960
+  leap year        1964
+  leap year        1968
+  leap year        1972
+  leap year        1976
+  leap year        1980
+ forcing_data size:          11      438288          50
+ allsize called sucessfully
+           7       18262          11      438288           5       18262
+ force_nhours,output_ndays      438288       18262
+ reading parameters ...
+ max,Stemmax,SapR,SapS,SLA,GLmax,GRmax,Gsmax,stom_n,a1,Ds0,Vcmx0,extkU,xfang,alpha,Tau_Leaf,Tau_Wood
+ year	doy	hour	Tair	Tsoil	RH	VPD	Rain	WS	PAR	CO2                                                    
+ force_nhour,forcing_data      438288   2021.00000       365.000000       24.0000000       15.0000000       14.8000002       66.0000000       579.817749       0.00000000       1.39999998       0.00000000       415.700012    
+ END read forcing data, number of cols           0
+ QC   1.00000000       1.00000000       1.00000000       1.00000000       1.00000000       1.00000000       1.00000000       1.00000000       1.00000000    
+ starting simulation,choosed coupled scheme is           3
+ P parameters inside model:   1.00000000       1.00000000    
+ simu_year,nyear        1934          50
+ idays         365           0
+ EndDays,EndHours,simu_year,idays         365        8760        1935         365
+ simu_year,nyear        1935          50
+ idays         730         365
+  leap year        1936
+ EndDays,EndHours,simu_year,idays         366        8784        1936         730
+ simu_year,nyear        1936          50
+  leap year        1936
+ idays        1096         730
+ EndDays,EndHours,simu_year,idays         365        8760        1937        1096
+ simu_year,nyear        1937          50
+ idays        1461        1096
+ EndDays,EndHours,simu_year,idays         365        8760        1938        1461
+ simu_year,nyear        1938          50
+ idays        1826        1461
+ EndDays,EndHours,simu_year,idays         365        8760        1939        1826
+ simu_year,nyear        1939          50
+ idays        2191        1826
+  leap year        1940
+ EndDays,EndHours,simu_year,idays         366        8784        1940        2191
+ simu_year,nyear        1940          50
+  leap year        1940
+ idays        2557        2191
+ EndDays,EndHours,simu_year,idays         365        8760        1941        2557
+ simu_year,nyear        1941          50
+ idays        2922        2557
+ EndDays,EndHours,simu_year,idays         365        8760        1942        2922
+ simu_year,nyear        1942          50
+ idays        3287        2922
+ EndDays,EndHours,simu_year,idays         365        8760        1943        3287
+ simu_year,nyear        1943          50
+ idays        3652        3287
+  leap year        1944
+ EndDays,EndHours,simu_year,idays         366        8784        1944        3652
+ simu_year,nyear        1944          50
+  leap year        1944
+ idays        4018        3652
+ EndDays,EndHours,simu_year,idays         365        8760        1945        4018
+ simu_year,nyear        1945          50
+ idays        4383        4018
+ EndDays,EndHours,simu_year,idays         365        8760        1946        4383
+ simu_year,nyear        1946          50
+ idays        4748        4383
+ EndDays,EndHours,simu_year,idays         365        8760        1947        4748
+Note: The following floating-point exceptions are signalling: IEEE_INVALID_FLAG IEEE_DIVIDE_BY_ZERO IEEE_OVERFLOW_FLAG IEEE_UNDERFLOW_FLAG IEEE_DENORMAL
+ simu_year,nyear        1947          50
+ idays        5113        4748
+  leap year        1948
+ EndDays,EndHours,simu_year,idays         366        8784        1948        5113
+ simu_year,nyear        1948          50
+  leap year        1948
+ idays        5479        5113
+ EndDays,EndHours,simu_year,idays         365        8760        1949        5479
+ simu_year,nyear        1949          50
+ idays        5844        5479
+ EndDays,EndHours,simu_year,idays         365        8760        1950        5844
+ simu_year,nyear        1950          50
+ idays        6209        5844
+ EndDays,EndHours,simu_year,idays         365        8760        1951        6209
+ simu_year,nyear        1951          50
+ idays        6574        6209
+  leap year        1952
+ EndDays,EndHours,simu_year,idays         366        8784        1952        6574
+ simu_year,nyear        1952          50
+  leap year        1952
+ idays        6940        6574
+ EndDays,EndHours,simu_year,idays         365        8760        1953        6940
+ simu_year,nyear        1953          50
+ idays        7305        6940
+ EndDays,EndHours,simu_year,idays         365        8760        1954        7305
+ simu_year,nyear        1954          50
+ idays        7670        7305
+ EndDays,EndHours,simu_year,idays         365        8760        1955        7670
+ simu_year,nyear        1955          50
+ idays        8035        7670
+  leap year        1956
+ EndDays,EndHours,simu_year,idays         366        8784        1956        8035
+ simu_year,nyear        1956          50
+  leap year        1956
+ idays        8401        8035
+ EndDays,EndHours,simu_year,idays         365        8760        1957        8401
+ simu_year,nyear        1957          50
+ idays        8766        8401
+ EndDays,EndHours,simu_year,idays         365        8760        1958        8766
+ simu_year,nyear        1958          50
+ idays        9131        8766
+ EndDays,EndHours,simu_year,idays         365        8760        1959        9131
+ simu_year,nyear        1959          50
+ idays        9496        9131
+  leap year        1960
+ EndDays,EndHours,simu_year,idays         366        8784        1960        9496
+ simu_year,nyear        1960          50
+  leap year        1960
+ idays        9862        9496
+ EndDays,EndHours,simu_year,idays         365        8760        1961        9862
+ simu_year,nyear        1961          50
+ idays       10227        9862
+ EndDays,EndHours,simu_year,idays         365        8760        1962       10227
+ simu_year,nyear        1962          50
+ idays       10592       10227
+ EndDays,EndHours,simu_year,idays         365        8760        1963       10592
+ simu_year,nyear        1963          50
+ idays       10957       10592
+  leap year        1964
+ EndDays,EndHours,simu_year,idays         366        8784        1964       10957
+ simu_year,nyear        1964          50
+  leap year        1964
+ idays       11323       10957
+ EndDays,EndHours,simu_year,idays         365        8760        1965       11323
+ simu_year,nyear        1965          50
+ idays       11688       11323
+ EndDays,EndHours,simu_year,idays         365        8760        1966       11688
+ simu_year,nyear        1966          50
+ idays       12053       11688
+ EndDays,EndHours,simu_year,idays         365        8760        1967       12053
+ simu_year,nyear        1967          50
+ idays       12418       12053
+  leap year        1968
+ EndDays,EndHours,simu_year,idays         366        8784        1968       12418
+ NSC is NA

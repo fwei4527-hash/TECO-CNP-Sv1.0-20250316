@@ -22,7 +22,12 @@ OUTPUT_DIR="${ROOT_DIR}/output"
 FORCING_DIR="${INPUT_DIR}/three_stage_forcing"
 
 ACTIVE_FORCING="${INPUT_DIR}/TECO forcing 2022-2024.txt"
+
+# Fortran实际读取的文件
 ACTIVE_INITIAL="${INPUT_DIR}/Initialstate_heshan.csv"
+
+# 阶段1使用的低碳库初始文件
+STAGE1_SEED_INITIAL="${INPUT_DIR}/Initialstate_heshan zero.csv"
 
 STAGE1_FORCING="${FORCING_DIR}/TECO_阶段1_预热_1934_1983.txt"
 STAGE2_FORCING="${FORCING_DIR}/TECO_阶段2_历史_1984_2021.txt"
@@ -61,6 +66,7 @@ require_file "${ACTIVE_FORCING}"
 require_file "${STAGE1_FORCING}"
 require_file "${STAGE2_FORCING}"
 require_file "${STAGE3_FORCING}"
+require_file "${STAGE1_SEED_INITIAL}"
 
 # Preserve the user's current input files.
 cp -p "${ACTIVE_INITIAL}" \
@@ -82,7 +88,7 @@ trap restore_inputs EXIT
 # The initial file present when the script starts is used only as
 # the numerical seed for Stage 1.
 STAGE1_INITIAL="${RUN_DIR}/Initialstate_stage1_seed.csv"
-cp -p "${ACTIVE_INITIAL}" "${STAGE1_INITIAL}"
+cp -p "${STAGE1_SEED_INITIAL}" "${STAGE1_INITIAL}"
 
 # ------------------------------------------------------------
 # Compile once

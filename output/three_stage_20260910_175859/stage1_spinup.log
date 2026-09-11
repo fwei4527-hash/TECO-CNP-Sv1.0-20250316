@@ -1,0 +1,37 @@
+teco_cnp.exe: malloc.c:2617: sysmalloc: Assertion `(old_top == initial_top (av) && old_size == 0) || ((unsigned long) (old_size) >= MINSIZE && prev_inuse (old_top) && ((unsigned long) old_end & (pagesize - 1)) == 0)' failed.
+
+Program received signal SIGABRT: Process abort signal.
+
+Backtrace for this error:
+#0  0x74719aa23960 in ???
+#1  0x74719aa22ac5 in ???
+#2  0x74719a64251f in ???
+	at ./signal/../sysdeps/unix/sysv/linux/x86_64/libc_sigaction.c:0
+#3  0x74719a6969bc in __pthread_kill_implementation
+	at ./nptl/pthread_kill.c:44
+#4  0x74719a6969bc in __pthread_kill_internal
+	at ./nptl/pthread_kill.c:78
+#5  0x74719a6969bc in __GI___pthread_kill
+	at ./nptl/pthread_kill.c:89
+#6  0x74719a642475 in __GI_raise
+	at ../sysdeps/posix/raise.c:26
+#7  0x74719a6287f2 in __GI_abort
+	at ./stdlib/abort.c:79
+#8  0x74719a6a0e89 in __malloc_assert
+	at ./malloc/malloc.c:307
+#9  0x74719a6a38f6 in sysmalloc
+	at ./malloc/malloc.c:2617
+#10  0x74719a6a489c in _int_malloc
+	at ./malloc/malloc.c:4407
+#11  0x74719a6a5221 in __GI___libc_malloc
+	at ./malloc/malloc.c:3321
+#12  0x5fb1385133f4 in ???
+#13  0x5fb13851da50 in ???
+#14  0x5fb13852bd76 in ???
+#15  0x5fb1385112de in ???
+#16  0x74719a629d8f in __libc_start_call_main
+	at ../sysdeps/nptl/libc_start_call_main.h:58
+#17  0x74719a629e3f in __libc_start_main_impl
+	at ../csu/libc-start.c:392
+#18  0x5fb138511304 in ???
+#19  0xffffffffffffffff in ???

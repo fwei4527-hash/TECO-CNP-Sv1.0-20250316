@@ -140,61 +140,65 @@ MODULE DaysHours
         end if
     END FUNCTION check_leap
 
+        FUNCTION YearDayHour() RESULT(rere1)
 
-    FUNCTION YearDayHour() RESULT(rere1)
         IMPLICIT NONE
-        INTEGER nLeapYear,n,m,n_Year,n_i_Year,i_Year,nleap1,year,check_leap1
-        INTEGER force_nhours1,output_ndays1,nyear1
+
+        INTEGER :: n, nleap1, year, check_leap1
+        INTEGER :: force_nhours1, output_ndays1, nyear1
         TYPE(ResultType2) :: rere1
 
         output_ndays1 = 0
         force_nhours1 = 0
-
         nleap1 = 0
-        !start_year = 2001
-        !end_year   = 2001
+
         nyear1 = end_year - start_year + 1
-        allocate(uni_Year(nyear1))
 
-        uni_Year = 0
+        IF (nyear1 .LT. 1) THEN
+            WRITE(*,*) 'ERROR: invalid simulation period'
+            WRITE(*,*) 'start_year=', start_year
+            WRITE(*,*) 'end_year=', end_year
+            STOP 1
+        ENDIF
 
-        uni_Year(1) = start_year
-        n_i_Year = 2 ! start from 2
+        IF (ALLOCATED(uni_Year)) DEALLOCATE(uni_Year)
+        ALLOCATE(uni_Year(nyear1))
 
-        DO n = 1,nyear1
-            i_year = start_year + n
-            uni_year(n_i_Year) = i_Year
-            n_i_Year = n_i_Year+1
-            
+        DO n = 1, nyear1
+            uni_Year(n) = start_year + n - 1
         ENDDO
-        write(*,*)'uni_Year',uni_Year,nyear1
-        !stop
-        
-        DO n = 1,nyear1
+
+        WRITE(*,*) 'uni_Year', uni_Year, nyear1
+
+        DO n = 1, nyear1
+
             year = uni_Year(n)
             check_leap1 = check_leap(year)
-            if (check_leap1 .EQ. 1) then
-                    nleap1 = nleap1+1
-                    ndays = 366
-            else
-                    !write(*,*) " no leap year",year 
-                    ndays = 365
-            end if
-            force_nhours1 = force_nhours1+ndays*24.
-            output_ndays1 = output_ndays1 +ndays
-            IF (n .eq. nyear1)THEN
-                lastyear_days = ndays
-                lastyear_hours = ndays*24
-                ! The loop index will take the next value after the end of loop range
+
+            IF (check_leap1 .EQ. 1) THEN
+                nleap1 = nleap1 + 1
+                ndays = 366
+            ELSE
+                ndays = 365
             ENDIF
+
+            force_nhours1 = force_nhours1 + ndays * 24
+            output_ndays1 = output_ndays1 + ndays
+
+            IF (n .EQ. nyear1) THEN
+                lastyear_days = ndays
+                lastyear_hours = ndays * 24
+            ENDIF
+
         ENDDO
 
         rere1%nleap_rere = nleap1
         rere1%force_nhours_rere = force_nhours1
         rere1%output_ndays_rere = output_ndays1
-        rere1%nyear_rere        = nyear1
+        rere1%nyear_rere = nyear1
 
     END FUNCTION YearDayHour
+
 
     FUNCTION Days_cal(simu_year) RESULT(result)
         IMPLICIT NONE
