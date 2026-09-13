@@ -32,7 +32,7 @@ gfortran -o teco_cnp.exe FileSize.o ParasModule.o SASpinUp.o LIMITATION.o NPUpta
 
 # echo "Running the executable..."
 # #./teco_cnp.exe 2022 2024 3 0 0 5000 0
-# ./teco_cnp.exe 2021 2024 3 0 1 2000 0 0 0       
+# ./teco_cnp.exe 1984 2021 3 0 0 100 0 0 0       
 
 
 # echo "Done."
@@ -49,7 +49,7 @@ do
     rm -rf ../output/sim/teco_cnp
     mkdir -p ../output/sim/teco_cnp
 
-    ./teco_cnp.exe 2021 2024 3 0 0 5000 0 1 ${PADD}
+    ./teco_cnp.exe 2022 2024 3 0 0 5000 0 1 ${PADD}
 
     if [ ! -d ../output/sim/teco_cnp ]; then
         echo "ERROR: ../output/sim/teco_cnp was not created."

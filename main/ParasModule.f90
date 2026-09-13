@@ -80,16 +80,34 @@ MODULE vars_site
         !INTEGER m,n
         CHARACTER(len=99) commts
         
-        ! Site-level specific parameters
-        OPEN(112,file='../input/pre-HeShanSpecificParameters.csv',status='old',ACTION='READ')
-        ! Forcing data
-        OPEN(111,file='../input/TECO forcing 2021-2024.txt',status='old',ACTION='READ')
-        ! Initial C pools, CN, CP ratios
-        OPEN(113,file='../input/Initialstate_heshan.csv',status='old',ACTION='READ')
+        ! ! Site-level specific parameters
+        ! OPEN(112,file='../input/pre-HeShanSpecificParameters.csv',status='old',ACTION='READ')
+        ! ! Forcing data
+        ! OPEN(111,file='../input/',status='old',ACTION='READ')
+        ! ! Initial C pools, CN, CP ratios
+        ! OPEN(113,file='../input/Initialstate_heshan.csv',status='old',ACTION='READ')
         
-        IF (MCMC .eq. 1)THEN
-            OPEN(114,file='../input/obs_for_MCMC_P0_2022_2024.txt',status='old',ACTION='READ')    !Observed data for data assimilation
-            OPEN(115,file='../input/mcmc_range.csv',status='old',ACTION='READ')
+        ! IF (MCMC .eq. 1)THEN
+        !     OPEN(114,file='../input/obs_for_MCMC_P0_2022_2024.txt',status='old',ACTION='READ')    !Observed data for data assimilation
+        !     OPEN(115,file='../input/mcmc_range.csv',status='old',ACTION='READ')
+        ! ENDIF
+                ! Site-level parameters
+        OPEN(112, file='../input/pre-HeShanSpecificParameters.csv', &
+             status='old', action='read')
+
+        ! Active forcing file, replaced by the shell script for each stage
+        OPEN(111, file='../input/three_stage_forcing/TECO_阶段3_公共气象_2022_2024.txt', &
+             status='old', action='read')
+
+        ! Active initial state, replaced by the shell script for each stage
+        OPEN(113, file='../input/Initialstate_heshan stage2.csv', &
+             status='old', action='read')
+
+        IF (MCMC .EQ. 1) THEN
+            OPEN(114, file='../input/obs_for_MCMC_P0_2022_2024.txt', &
+                 status='old', action='read')
+            OPEN(115, file='../input/mcmc_range.csv', &
+                 status='old', action='read')
         ENDIF
 
         CALL AlloSize()  !Also need deallocate, TO BE IMPROVED 

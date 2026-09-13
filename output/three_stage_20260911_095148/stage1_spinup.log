@@ -1,0 +1,22 @@
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x7b574e223960 in ???
+#1  0x7b574e222ac5 in ???
+#2  0x7b574de4251f in ???
+	at ./signal/../sysdeps/unix/sysv/linux/x86_64/libc_sigaction.c:0
+#3  0x622b41aa21dd in photosyn_
+	at /home/user/fangwei/FangxiuWan-TECO-CNP-Sv1.0-edff198/TECO-CNP Sv1.0 20250316/main/TECO_CNP_main.f90:2406
+#4  0x622b41aa15f6 in agsean_day_
+	at /home/user/fangwei/FangxiuWan-TECO-CNP-Sv1.0-edff198/TECO-CNP Sv1.0 20250316/main/TECO_CNP_main.f90:2037
+#5  0x622b41a9e5b5 in xlayers_
+	at /home/user/fangwei/FangxiuWan-TECO-CNP-Sv1.0-edff198/TECO-CNP Sv1.0 20250316/main/TECO_CNP_main.f90:1760
+#6  0x622b41a9cff4 in canopy_
+	at /home/user/fangwei/FangxiuWan-TECO-CNP-Sv1.0-edff198/TECO-CNP Sv1.0 20250316/main/TECO_CNP_main.f90:581
+#7  0x622b41a94a10 in cnp_simu_
+	at /home/user/fangwei/FangxiuWan-TECO-CNP-Sv1.0-edff198/TECO-CNP Sv1.0 20250316/main/TECO_CNP_main.f90:365
+#8  0x622b41aa4755 in MAIN__
+	at /home/user/fangwei/FangxiuWan-TECO-CNP-Sv1.0-edff198/TECO-CNP Sv1.0 20250316/main/TECO_CNP_main.f90:132
+#9  0x622b41aa4f72 in main
+	at /home/user/fangwei/FangxiuWan-TECO-CNP-Sv1.0-edff198/TECO-CNP Sv1.0 20250316/main/TECO_CNP_main.f90:63
