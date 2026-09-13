@@ -96,11 +96,11 @@ MODULE vars_site
              status='old', action='read')
 
         ! Active forcing file, replaced by the shell script for each stage
-        OPEN(111, file='../input/three_stage_forcing/TECO_阶段3_公共气象_2022_2024.txt', &
+        OPEN(111, file='../input/three_stage_forcing/TECO_阶段2_历史_1984_2021.txt', &
              status='old', action='read')
 
         ! Active initial state, replaced by the shell script for each stage
-        OPEN(113, file='../input/Initialstate_heshan stage2.csv', &
+        OPEN(113, file='../input/Initialstate_heshan zero.csv', &
              status='old', action='read')
 
         IF (MCMC .EQ. 1) THEN

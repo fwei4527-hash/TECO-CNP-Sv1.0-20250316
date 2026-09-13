@@ -30,37 +30,37 @@ gfortran -o teco_cnp.exe FileSize.o ParasModule.o SASpinUp.o LIMITATION.o NPUpta
 # 6: nspinup     = 500   (spinup 循环次数)
 # 7: SensTest    = 0     (不用敏感性分析)
 
-# echo "Running the executable..."
-# #./teco_cnp.exe 2022 2024 3 0 0 5000 0
-# ./teco_cnp.exe 1984 2021 3 0 0 100 0 0 0       
+echo "Running the executable..."
+#./teco_cnp.exe 2022 2024 3 0 0 5000 0
+./teco_cnp.exe 1984 2021 3 0 0 100 0 0 0       
 
-
-# echo "Done."
-
- ----------------------------------------------
-echo "Running P addition treatments..."
-
-for PADD in 0 25 50 100
-do
-    echo "======================================"
-    echo "Running P addition: ${PADD} kg P ha-1 yr-1"
-    echo "======================================"
-
-    rm -rf ../output/sim/teco_cnp
-    mkdir -p ../output/sim/teco_cnp
-
-    ./teco_cnp.exe 2022 2024 3 0 0 5000 0 1 ${PADD}
-
-    if [ ! -d ../output/sim/teco_cnp ]; then
-        echo "ERROR: ../output/sim/teco_cnp was not created."
-        echo "Model likely failed for PADD=${PADD}"
-        exit 1
-    fi
-
-    mkdir -p "../output/sim/${PADD}磷添加"
-    rm -rf "../output/sim/${PADD}磷添加/teco_cnp"
-    mv ../output/sim/teco_cnp "../output/sim/${PADD}磷添加/teco_cnp"
-
-done
 
 echo "Done."
+
+#  ----------------------------------------------
+# echo "Running P addition treatments..."
+
+# for PADD in 0 25 50 100
+# do
+#     echo "======================================"
+#     echo "Running P addition: ${PADD} kg P ha-1 yr-1"
+#     echo "======================================"
+
+#     rm -rf ../output/sim/teco_cnp
+#     mkdir -p ../output/sim/teco_cnp
+
+#     ./teco_cnp.exe 2022 2024 3 0 0 5000 0 1 ${PADD}
+
+#     if [ ! -d ../output/sim/teco_cnp ]; then
+#         echo "ERROR: ../output/sim/teco_cnp was not created."
+#         echo "Model likely failed for PADD=${PADD}"
+#         exit 1
+#     fi
+
+#     mkdir -p "../output/sim/${PADD}磷添加"
+#     rm -rf "../output/sim/${PADD}磷添加/teco_cnp"
+#     mv ../output/sim/teco_cnp "../output/sim/${PADD}磷添加/teco_cnp"
+
+# done
+
+# echo "Done."
