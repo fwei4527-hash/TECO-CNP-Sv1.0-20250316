@@ -96,7 +96,7 @@ MODULE vars_site
              status='old', action='read')
 
         ! Active forcing file, replaced by the shell script for each stage
-        OPEN(111, file='../input/three_stage_forcing/TECO_阶段2_历史_1984_2021.txt', &
+        OPEN(111, file='../input/TECO forcing 2021-2024.txt', &
              status='old', action='read')
 
         ! Active initial state, replaced by the shell script for each stage
@@ -315,6 +315,11 @@ MODULE vars_site
         rate_maxN  =    site_paras(60)
         rate_maxP  =    site_paras(61)
 
+        ! Optional environment-variable multipliers used only by the
+        ! external Morris sensitivity workflow.  With no variables set,
+        ! every multiplier equals one and the original model is unchanged.
+        CALL ApplySensitivityOverrides()
+
 ! UNIT TRANSFER
         !   the unit of residence time is transformed from yearly to hourly
         tauC=(/tau_L,tau_W,tau_R,tau_Re,tau_F,tau_C,tau_Micr,tau_Slow,tau_Pass/)*8760.  !hourly
@@ -392,6 +397,84 @@ MODULE vars_site
         NSP=NSC/2300. !change to 0.009 2023/3/21 !  change 1 to 0.5 2023/3/12
 
     END SUBROUTINE site_value
+
+    SUBROUTINE ApplySensitivityOverrides()
+        IMPLICIT NONE
+        CHARACTER(len=128) :: text
+        INTEGER :: stat
+
+        CALL EnvScale('TECO_SCALE_SLA', SLAx)
+        CALL EnvScale('TECO_SCALE_VCMAX', Vcmax0)
+        CALL EnvScale('TECO_SCALE_ALPHA', alpha)
+        CALL EnvScale('TECO_SCALE_TAU_LEAF', tau_L)
+        CALL EnvScale('TECO_SCALE_TAU_WOOD', tau_W)
+        CALL EnvScale('TECO_SCALE_TAU_ROOT', tau_R)
+        CALL EnvScale('TECO_SCALE_TAU_FINE_LITTER', tau_F)
+        CALL EnvScale('TECO_SCALE_TAU_COARSE_LITTER', tau_C)
+        CALL EnvScale('TECO_SCALE_TAU_MICROBIAL', tau_Micr)
+        CALL EnvScale('TECO_SCALE_TAU_SLOW', tau_Slow)
+        CALL EnvScale('TECO_SCALE_TAU_PASSIVE', tau_Pass)
+        CALL EnvScale('TECO_SCALE_Q10', Q10)
+        CALL EnvScale('TECO_SCALE_ALPHA_P', alphaP)
+        sensitivity_alphaP = alphaP
+        CALL EnvScale('TECO_SCALE_ETA_LEAF', etaL)
+        CALL EnvScale('TECO_SCALE_ETA_WOOD', etaW)
+        CALL EnvScale('TECO_SCALE_ETA_ROOT', etaR)
+        CALL EnvScale('TECO_SCALE_RATE_MAX_P', rate_maxP)
+
+        CALL EnvValue('TECO_SCALE_P_SORB_MAX', s_Psorbmax)
+        CALL EnvValue('TECO_SCALE_KM_LAB_P', s_kmlabP)
+        CALL EnvValue('TECO_SCALE_SORB_TO_SSORB', s_sorb_to_ssorb)
+        CALL EnvValue('TECO_SCALE_SSORB_TO_OCC', s_ssorb_to_occ)
+        CALL EnvValue('TECO_SCALE_P_LOSS', s_P_loss)
+        CALL EnvValue('TECO_SCALE_ALLOC_KN', sens_alloc_kn)
+        CALL EnvValue('TECO_SCALE_ALLOC_WW', sens_alloc_ww)
+        CALL EnvValue('TECO_SCALE_ALLOC_EL', sens_alloc_el)
+        CALL EnvValue('TECO_SCALE_ALLOC_ES', sens_alloc_es)
+        CALL EnvValue('TECO_SCALE_ALLOC_REPRO', sens_alloc_repro)
+        CALL EnvValue('TECO_SCALE_KPMIN', sens_kpmin)
+        CALL EnvValue('TECO_SCALE_KPMIN_LOW', sens_kpmin_low)
+        CALL EnvValue('TECO_SCALE_FPTASE_CAPACITY', sens_fptase_capacity)
+
+        text = ''
+        CALL get_environment_variable('TECO_SENSITIVITY_MODE', text, status=stat)
+        IF (stat .EQ. 0 .AND. LEN_TRIM(text) .GT. 0) THEN
+            READ(text,*,IOSTAT=stat) teco_sensitivity_mode
+            IF (stat .NE. 0) THEN
+                WRITE(*,*) 'ERROR: invalid TECO_SENSITIVITY_MODE=', TRIM(text)
+                STOP 81
+            ENDIF
+        ENDIF
+    END SUBROUTINE ApplySensitivityOverrides
+
+    SUBROUTINE EnvScale(name, target)
+        IMPLICIT NONE
+        CHARACTER(len=*), INTENT(IN) :: name
+        REAL, INTENT(INOUT) :: target
+        REAL :: scale
+        scale = 1.0
+        CALL EnvValue(name, scale)
+        target = target * scale
+    END SUBROUTINE EnvScale
+
+    SUBROUTINE EnvValue(name, target)
+        IMPLICIT NONE
+        CHARACTER(len=*), INTENT(IN) :: name
+        REAL, INTENT(INOUT) :: target
+        CHARACTER(len=128) :: text
+        INTEGER :: stat
+        REAL :: value
+        text = ''
+        CALL get_environment_variable(name, text, status=stat)
+        IF (stat .NE. 0 .OR. LEN_TRIM(text) .EQ. 0) RETURN
+        READ(text,*,IOSTAT=stat) value
+        IF (stat .NE. 0 .OR. value .LE. 0.0) THEN
+            WRITE(*,*) 'ERROR: environment variable must be positive: ', &
+                TRIM(name), '=', TRIM(text)
+            STOP 82
+        ENDIF
+        target = value
+    END SUBROUTINE EnvValue
 
     SUBROUTINE loop_initial_value(iiterms,simu_year,EndDays,EndHours,stor_use)
         USE DaysHours

@@ -1,0 +1,16 @@
+{
+  "model_root": "/home/user/fangwei/FangxiuWan-TECO-CNP-Sv1.0-edff198/TECO-CNP Sv1.0 20250316",
+  "executable": "/home/user/fangwei/FangxiuWan-TECO-CNP-Sv1.0-edff198/TECO-CNP Sv1.0 20250316/main/teco_sensitivity.exe",
+  "start_year": 2021,
+  "end_year": 2024,
+  "parameter_count": 30,
+  "trajectories": 20,
+  "levels": 6,
+  "delta": 0.6,
+  "design_samples": 620,
+  "treatment_runs": 2480,
+  "seed": 20260921,
+  "workers": 2,
+  "elapsed_seconds": 186.38715744018555,
+  "mean_uncached_run_seconds": 0.14859983036595006
+}

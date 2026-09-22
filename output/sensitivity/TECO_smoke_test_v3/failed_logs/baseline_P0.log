@@ -1,0 +1,32 @@
+ NPaddition =            0
+ P_add_rate_kg_ha_yr =    0.00000000    
+ uni_Year        2021        2022        2023        2024           4
+  leap year        2024
+ forcing_data size:          11       35064           4
+ allsize called sucessfully
+           7        1461          11       35064           5        1461
+ force_nhours,output_ndays       35064        1461
+ reading parameters ...
+ max,Stemmax,SapR,SapS,SLA,GLmax,GRmax,Gsmax,stom_n,a1,Ds0,Vcmx0,extkU,xfang,alpha,Tau_Leaf,Tau_Wood
+ year	doy	hour	Tair	Tsoil	RH	VPD	Rain	WS	PAR	CO2                                                    
+ force_nhour,forcing_data       35064   2021.00000       365.000000       24.0000000       15.0000000       14.8000002       66.0000000       579.817749       0.00000000       1.39999998       0.00000000       415.700012    
+ END read forcing data, number of cols           0
+ QC   1.00000000       1.00000000       1.00000000       1.00000000       1345.05176       1140.36206       457.941833       11991.9219       8334.10645    
+ starting simulation,choosed coupled scheme is           3
+ P parameters inside model:   1.00000000       1.00000000    
+ simu_year,nyear        2021           4
+ idays         365           0
+ EndDays,EndHours,simu_year,idays         365        8760        2022         365
+ simu_year,nyear        2022           4
+ idays         730         365
+ EndDays,EndHours,simu_year,idays         365        8760        2023         730
+ simu_year,nyear        2023           4
+ idays        1095         730
+  leap year        2024
+ EndDays,EndHours,simu_year,idays         366        8784        2024        1095
+ simu_year,nyear        2024           4
+  leap year        2024
+ idays        1461        1095
+ END SIMU
+ Here, finish the simulation, iloops, CYCLE_CNP:           1           3
+Note: The following floating-point exceptions are signalling: IEEE_INVALID_FLAG IEEE_DIVIDE_BY_ZERO IEEE_UNDERFLOW_FLAG IEEE_DENORMAL

@@ -1,0 +1,27 @@
+ NPaddition =            0
+ P_add_rate_kg_ha_yr =    0.00000000    
+ uni_Year        2022        2023        2024           3
+  leap year        2024
+ forcing_data size:          11       26304           3
+ allsize called sucessfully
+           7        1096          11       26304           5        1096
+ force_nhours,output_ndays       26304        1096
+ reading parameters ...
+ max,Stemmax,SapR,SapS,SLA,GLmax,GRmax,Gsmax,stom_n,a1,Ds0,Vcmx0,extkU,xfang,alpha,Tau_Leaf,Tau_Wood
+ year	doy	hour	Tair	Tsoil	RH	VPD	Rain	WS	PAR	CO2                                                    
+
+Program received signal SIGSEGV: Segmentation fault - invalid memory reference.
+
+Backtrace for this error:
+#0  0x74abe704251f in ???
+	at ./signal/../sysdeps/unix/sysv/linux/x86_64/libc_sigaction.c:0
+#1  0x74abe75a1180 in read_real
+	at ../../../libgfortran/io/list_read.c:2026
+#2  0x74abe75a1da5 in list_formatted_read_scalar
+	at ../../../libgfortran/io/list_read.c:2337
+#3  0x61519cc0a4a9 in __vars_site_MOD_readinitialfile
+	at /home/user/fangwei/FangxiuWan-TECO-CNP-Sv1.0-edff198/TECO-CNP Sv1.0 20250316/main/ParasModule.f90:128
+#4  0x61519cc18b6d in MAIN__
+	at /home/user/fangwei/FangxiuWan-TECO-CNP-Sv1.0-edff198/TECO-CNP Sv1.0 20250316/main/TECO_CNP_main.f90:124
+#5  0x61519cbfe31e in main
+	at /home/user/fangwei/FangxiuWan-TECO-CNP-Sv1.0-edff198/TECO-CNP Sv1.0 20250316/main/TECO_CNP_main.f90:63

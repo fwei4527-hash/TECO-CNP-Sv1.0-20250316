@@ -108,6 +108,22 @@ REAL(SGL) :: s_ssorb_to_occ  = 1.00
 REAL(SGL) :: s_P_loss        = 1.00
 REAL :: P_add_rate_kg_ha_yr
 
+! ------------------------------------------------------------------
+! External sensitivity-analysis controls.  Every multiplier defaults
+! to one, so a normal TECO run is bit-for-bit unchanged unless the
+! corresponding TECO_* environment variable is explicitly supplied.
+! ------------------------------------------------------------------
+INTEGER :: teco_sensitivity_mode = 0
+REAL(SGL) :: sens_alloc_kn       = 1.0
+REAL(SGL) :: sens_alloc_ww       = 1.0
+REAL(SGL) :: sens_alloc_el       = 1.0
+REAL(SGL) :: sens_alloc_es       = 1.0
+REAL(SGL) :: sens_alloc_repro    = 1.0
+REAL(SGL) :: sens_kpmin          = 1.0
+REAL(SGL) :: sens_kpmin_low      = 1.0
+REAL(SGL) :: sens_fptase_capacity= 1.0
+REAL(SGL) :: sensitivity_alphaP  = 0.0
+
 
 END MODULE IntersVariables
 
@@ -1092,6 +1108,93 @@ MODULE outputs_mod
     ENDIF  ! END the output when SpinUp is activated
 
     END SUBROUTINE WriteFiles_noMCMC
+
+    SUBROUTINE WriteSensitivitySummary()
+        IMPLICIT NONE
+        INTEGER :: u, ios, nday, first_day, first_hour, analysis_days, y
+        CHARACTER(len=1024) :: outfile
+        REAL :: npp_leaf_sum, npp_wood_sum, npp_root_sum, npp_repro_sum
+
+        CALL get_environment_variable('TECO_SUMMARY_FILE', outfile, status=ios)
+        IF (ios .NE. 0 .OR. LEN_TRIM(outfile) .EQ. 0) THEN
+            outfile = 'teco_sensitivity_summary.csv'
+        ENDIF
+
+        nday = output_ndays
+        IF (nday .LT. 1) THEN
+            WRITE(*,*) 'ERROR: no daily output available for sensitivity summary'
+            STOP 91
+        ENDIF
+
+        ! The model must start in 2021 because both the forcing file and the
+        ! fertilisation day indices use 2021-01-01 as their origin.  Exclude
+        ! the 2021 conditioning year from all flux and mean summaries so the
+        ! sensitivity outputs still describe the 2022-2024 experiment.
+        first_day = 1
+        IF (start_year .LT. 2022) THEN
+            DO y = start_year, MIN(2021, end_year)
+                IF (MOD(y,400) .EQ. 0 .OR. &
+                    (MOD(y,4) .EQ. 0 .AND. MOD(y,100) .NE. 0)) THEN
+                    first_day = first_day + 366
+                ELSE
+                    first_day = first_day + 365
+                ENDIF
+            ENDDO
+        ENDIF
+        IF (first_day .GT. nday) THEN
+            WRITE(*,*) 'ERROR: no 2022-2024 analysis days in sensitivity run'
+            STOP 93
+        ENDIF
+        first_hour = (first_day-1)*24 + 1
+        analysis_days = nday-first_day+1
+
+        npp_leaf_sum  = SUM(output_daily(4,first_day:nday)*NPPallo(1,first_day:nday))
+        npp_wood_sum  = SUM(output_daily(4,first_day:nday)*NPPallo(2,first_day:nday))
+        npp_root_sum  = SUM(output_daily(4,first_day:nday)*NPPallo(3,first_day:nday))
+        npp_repro_sum = SUM(output_daily(4,first_day:nday)*NPPallo(4,first_day:nday))
+
+        OPEN(newunit=u, file=TRIM(outfile), status='replace', action='write', iostat=ios)
+        IF (ios .NE. 0) THEN
+            WRITE(*,*) 'ERROR: cannot create sensitivity summary: ', TRIM(outfile)
+            STOP 92
+        ENDIF
+
+        WRITE(u,'(A)') 'gpp_sum,npp_sum,lai_mean,reco_sum,rauto_sum,rhetero_sum,'// &
+            'npp_leaf_sum,npp_wood_sum,npp_root_sum,npp_repro_sum,litterfall_c_sum,'// &
+            'leaf_c_end,wood_c_end,root_c_end,plant_c_end,soil_c_end,nsc_end,'// &
+            'p_demand_sum,p_uptake_sum,p_retrans_sum,leaf_p_end,root_p_end,plant_p_end,'// &
+            'leaf_cp_end,root_cp_end,p_net_sum,fptase_sum,p_loss_sum,'// &
+            'labile_p_end,sorbed_p_end,strongly_sorbed_p_end,occluded_p_end,'// &
+            'microbial_p_end,organic_p_end,total_inorganic_p_end'
+
+        WRITE(u,'(*(G0.10,:,","))') &
+            SUM(output_daily(1,first_day:nday)), SUM(output_daily(4,first_day:nday)), &
+            SUM(output_daily(5,first_day:nday))/REAL(analysis_days), &
+            SUM(output_daily(2,first_day:nday)), &
+            SUM(output_record(8,first_hour:force_nhours)), &
+            SUM(output_record(7,first_hour:force_nhours)), &
+            npp_leaf_sum, npp_wood_sum, npp_root_sum, npp_repro_sum, &
+            SUM(outputd_outc(1:4,first_day:nday)), &
+            outputd_ccycle_Cpools(1,nday), outputd_ccycle_Cpools(2,nday), &
+            outputd_ccycle_Cpools(3,nday), SUM(outputd_ccycle_Cpools(1:4,nday)), &
+            SUM(outputd_ccycle_Cpools(5:9,nday)), NSC, &
+            SUM(P_demand_rec(first_hour:force_nhours)), &
+            SUM(outputd_Pdynamic(5,first_day:nday)), &
+            SUM((outputd_outp(1,first_day:nday)+outputd_outp(2,first_day:nday)+ &
+            outputd_outp(3,first_day:nday))*sensitivity_alphaP), &
+            outputd_Pcycle_Ppools(1,nday), outputd_Pcycle_Ppools(3,nday), &
+            SUM(outputd_Pcycle_Ppools(1:4,nday)), &
+            outputd_Pcycle_CPratios(1,nday), outputd_Pcycle_CPratios(3,nday), &
+            SUM(outputd_Pdynamic(2,first_day:nday)), &
+            SUM(outputd_Pdynamic(3,first_day:nday)), &
+            SUM(outputd_Pdynamic(4,first_day:nday)), outputd_Pdynamic(6,nday), &
+            outputd_Pdynamic(7,nday), outputd_Pdynamic(8,nday), &
+            outputd_Pdynamic(9,nday), outputd_Pcycle_Ppools(7,nday), &
+            SUM(outputd_Pcycle_Ppools(5:9,nday)), SUM(outputd_Pdynamic(6:9,nday))
+
+        CLOSE(u)
+        WRITE(*,*) 'Sensitivity summary written: ', TRIM(outfile)
+    END SUBROUTINE WriteSensitivitySummary
 END MODULE outputs_mod
 
 
